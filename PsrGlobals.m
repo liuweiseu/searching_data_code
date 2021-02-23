@@ -1,0 +1,1 @@
+global ChannelNo CenterFreq BandWidth SampFreq ACCNo PPSRSTTIME Mode Type Start_Freq Stop_Freq Frame_Len pre_time Start_CH Stop_CH
