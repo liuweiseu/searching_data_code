@@ -16,12 +16,6 @@ else
    filename= fullfile(pathname, filename0);
 end
 
-pulsar_period=input('pulsar_period(ms)=');
-[ filename ] = Fun_TimeFreqV3(filename , pulsar_period);
-helpdlg('时频处理结束','提示');
-% [y,Fs] = audioread('五月天 - 你不是真正的快乐.mp3');
-% %播放读入的数据
-% p = audioplayer(y,Fs);
-% play(p);
-% a = input('请输入任意字符：');
-% stop(p);
+%打开数据文件
+[ filename ] = Fun_DataNoBase(filename);
+helpdlg('去基线运算结束','提示');

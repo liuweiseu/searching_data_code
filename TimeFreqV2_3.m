@@ -1,5 +1,5 @@
-clc;
 clear;
+% clc;
 close all;
 
 PsrGlobals  %define the global variable for useful parameter to be used in other program
@@ -8,7 +8,7 @@ PsrGlobals  %define the global variable for useful parameter to be used in other
     {'*.dat','data Files';...
     '*.*','All Files' },...
     '请选择要处理的脉冲星数据',...
-    'J:\存数软件');
+    'G:\存数软件');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -23,8 +23,8 @@ filename_len=length(filename);
 %打开读文件
 fp_r=fopen(filename,'rb');
 %输出文件名构成
-filename(filename_len-3:filename_len)='_Pha';
-filename=[filename,'seTime.dat'];
+filename(filename_len-3:filename_len)='_Tim';
+filename=[filename,'eFreq_V2.3.dat'];
 fp_w=fopen(filename,'wb');
 %读出文件头
 [file_head_info,len]=fread(fp_r,512,'double');
@@ -39,15 +39,10 @@ lost_all = 0;
 error_1 = 0;
 error_2 = 0;
 cycle = 0;%已经叠加的周期数
-N_time_now = 1;
+max_delt = 0;
 file_head_info(3)=pulsar_period;
-N=uint32(pulsar_period/dt);                 %计算一个周期里应该有几帧数据
+N=uint32(pulsar_period/dt);                         %计算一个周期里应该有几帧数据
 N_double=pulsar_period/dt;
-I_time = input('integral time(s)=');
-exp_cycle = floor(I_time/pulsar_period);    %计算这么长时间里应该取几周
-Obs_time = input('Obs_time(s)=');
-N_time = floor(Obs_time/I_time);            %计算观测时间内，有几个积分时间段
-data_PT = zeros(N_time,N);
 file_head_info(4)=N;
 %写入新的文件头
 fwrite(fp_w,file_head_info,'double');
@@ -55,43 +50,47 @@ data=zeros(frame_len,N);
 temp_data=zeros(frame_len,N);
 temp=zeros(frame_len*N,1);
 get_frame_num=0;
-cal_ptr_mid=0;
 [temp,len]=fread(fp_r,frame_len*N,'double');
-while (~feof(fp_r)) && (N_time_now<N_time)
+start_time=CalTime(temp(25:32));
+while ~feof(fp_r)
     now_ptr=now_ptr+N;
-%     cal_ptr=uint32(cal_ptr+N_double);
-    cal_ptr_mid = cal_ptr_mid + N_double;
-    cal_ptr = uint32(cal_ptr_mid);
+    cal_ptr=uint32(cal_ptr+N_double);
     cycle = cycle+1;
     delt_ptr=cal_ptr-now_ptr;
     temp_data=reshape(temp,frame_len,N);
+    [lost, temp_data] = CheckData(temp_data,ACCNo);
+    if(lost == -1)
+        error_1 = error_1+1;
+         helpdlg('时标出现异常:-1','提示');
+         return;
+    elseif(lost == -2)
+        error_2 = error_2+1;
+        [temp,len]=fread(fp_r,frame_len*N,'double'); 
+%         helpdlg('时标出现异常:-2','提示');
+    else
+        fseek(fp_r,lost*(-1)*frame_len*8,'cof');
+        lost_all = lost_all + lost;
+    end
+    fseek(fp_r,delt_ptr*frame_len*8,'cof');
     if(delt_ptr ~= 0)
-        [d,len] = fread(fp_r,frame_len*delt_ptr,'double');
         now_ptr = 0;
         cal_ptr = 0;
-        cal_ptr_mid = 0;
     end
-     data=data+temp_data;
-    if(cycle==exp_cycle)
-        cycle = 0;
-        data_PT(N_time_now,:)=sum(data(1:580,:))+sum(data(606:2040,:));
-        N_time_now = N_time_now + 1;
-        data = zeros(frame_len,N);
-    end       
+    data=data+temp_data;
+    get_frame_num=get_frame_num+1;
     [temp,len]=fread(fp_r,frame_len*N,'double'); 
 end
 % data=data/get_frame_num;
-fwrite(fp_w,data_PT,'double');
+fwrite(fp_w,data,'double');
 fclose(fp_r);
 fclose(fp_w);
-x = 1:N;
-y = 1:N_time;
-h=pcolor(x,y,data_PT);
-set(h,'edgecolor','none','facecolor','interp');
-colorbar;
-xlabel('Phase');
-ylabel('Time');
-helpdlg('相位时间图绘制完成','提示');
+helpdlg('时频处理结束','提示');
 error_1
 error_2
 lost_all
+% [y,Fs] = audioread('五月天 - 你不是真正的快乐.mp3');
+% %播放读入的数据
+% p = audioplayer(y,Fs);
+% play(p);
+% a = input('请输入任意字符：');
+% stop(p);
