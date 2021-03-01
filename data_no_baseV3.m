@@ -8,7 +8,7 @@ PsrGlobals  %define the global variable for useful parameter to be used in other
     {'*.dat','data Files';...
     '*.*','All Fil es' },...
     '请选择要处理的脉冲星数据',...
-    'D:\lw\云南实验数据\data\Searching_Mode');
+    '/Users/wei/Project/PSR/data');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -19,3 +19,4 @@ end
 %打开数据文件
 [ filename ] = Fun_DataNoBaseV3(filename);
 helpdlg('去基线运算结束','提示');
+recognize
