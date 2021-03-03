@@ -20,4 +20,15 @@ end
 
 fp = open_psr_file(filename);
 status = read_psr_head(fp);
+N = 100;
+i = 1;
+data = [];
+timeinfo = [];
+while(i<N)
+    [d,t] = read_psr_data(fp);
+    data(i,:) = d;
+    timeinfo(i) = t;
+    i = i + 1;
+end
+plot(timeinfo);
 close_psr_file(fp);

@@ -36,6 +36,8 @@ function PSF_V0101(fp)
 
 PsrGlobals;
     s=fread(fp,[16,32],'uchar');
+    
+    % get parameters from psf header.
     SourceName = sprintf('%s',s(:,2));
     SaveTime = str2num(sprintf('%s',s(:,3)));
     Observer = sprintf('%s',s(:,4));
@@ -67,7 +69,24 @@ PsrGlobals;
     CenterFreq = str2num(sprintf('%s',s(:,30)));
     SideBand = sprintf('%s',s(:,31));
     
-    FrameLen = ChannelNum * ObsMode * BitMode/8 + 32;
+    % calculate FrameLen.
+    %FrameLen = ChannelNum * ObsMode;
+    if(BitMode == 8)
+        DataType = 'uchar';
+    elseif(BitMode == 16)
+        DataType = 'uint16';
+    else
+        DataType = 'uchar';
+    end
+    % get TimeInfo from the first data frame.
+    tmp = fread(fp,8,'uint32');
+    TimeInfoPrevious = tmp(7);
+    TimeInfoNext = 0;
+    % skip the first data frame.
+    tmp = fread(fp,[ObsMode,ChannelNum],DataType);
     
+    % init lost frame
+    LostFrames = 0;
+    TotalLost = [];
 end
 
