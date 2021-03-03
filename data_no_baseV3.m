@@ -1,8 +1,10 @@
 clear;
-% clc;
+clc;
 close all;
 
-PsrGlobals  %define the global variable for useful parameter to be used in other program
+% all the psf_rw functions are in psf_rw.
+path(path,'psf_rw');
+PsrGlobals  
 
 [filename0, pathname] = uigetfile( ...
     {'*.dat','data Files';...

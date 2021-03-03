@@ -3,7 +3,7 @@ function status=read_psr_head(fp)
 %   return ; r--the length of the data package
 
 % add the func path
-path(path,'read_psr_head');
+path(path,'psf_rw/read_psr_head');
 
 [file_head,n]=fread(fp,16,'*uint8');
 
