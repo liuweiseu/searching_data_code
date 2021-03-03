@@ -20,7 +20,7 @@ end
 
 fp = open_psr_file(filename);
 status = read_psr_head(fp);
-N = 100;
+N = 1000;
 i = 1;
 data = [];
 timeinfo = [];

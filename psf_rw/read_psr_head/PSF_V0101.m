@@ -69,8 +69,7 @@ PsrGlobals;
     CenterFreq = str2num(sprintf('%s',s(:,30)));
     SideBand = sprintf('%s',s(:,31));
     
-    % calculate FrameLen.
-    %FrameLen = ChannelNum * ObsMode;
+    % calculate DateType and FrameHeaderSize
     if(BitMode == 8)
         DataType = 'uchar';
     elseif(BitMode == 16)
@@ -78,6 +77,8 @@ PsrGlobals;
     else
         DataType = 'uchar';
     end
+    FrameHeaderSize = 32 * 8 / BitMode;
+    
     % get TimeInfo from the first data frame.
     tmp = fread(fp,8,'uint32');
     TimeInfoPrevious = tmp(7);
@@ -88,5 +89,14 @@ PsrGlobals;
     % init lost frame
     LostFrames = 0;
     TotalLost = [];
+    
+    % calculate FrameNumOneTime
+    % read 1GB from data file one time
+    memorysize = 1;
+    FrameLen = ChannelNum * ObsMode + FrameHeaderSize;
+    FrameNumOneTime = floor(memorysize * 1024 * 1024 * 1024 /(BitMode/8) /FrameLen);
+    PsfDataBuf = zeros(FrameNumOneTime,1);
+    PsfDataCnt = 0;
+    PsfPointer = 1;
 end
 
