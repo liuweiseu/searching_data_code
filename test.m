@@ -11,6 +11,7 @@ PsrGlobals
     '*.*','All Fil es' },...
     '请选择要处理的脉冲星数据',...
     '/Users/wei/Project/PSR/data');
+clock
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -18,17 +19,17 @@ else
    filename= fullfile(pathname, filename0);
 end
 
-fp = open_psr_file(filename);
-status = read_psr_head(fp);
-N = 1000;
+fp = OpenPsrFile(filename);
+status = ReadPsrHead(fp);
+N = 100;
 i = 1;
 data = [];
 timeinfo = [];
 while(i<N)
-    [d,t] = read_psr_data(fp);
+    [d,t] = ReadPsrData(fp);
     data(i,:) = d;
     timeinfo(i) = t;
     i = i + 1;
 end
-plot(timeinfo);
-close_psr_file(fp);
+plot(diff(timeinfo));
+ClosePsrFile(fp);

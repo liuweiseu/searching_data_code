@@ -1,9 +1,9 @@
-function status=read_psr_head(fp)
+function status=ReadPsrHead(fp)
 %read the head of psr file according to the psr type
 %   return ; r--the length of the data package
 
 % add the func path
-path(path,'psf_rw/read_psr_head');
+path(path,'psf_rw/ReadPsrHead');
 
 [file_head,n]=fread(fp,16,'*uint8');
 

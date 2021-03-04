@@ -1,4 +1,4 @@
-function status = close_psr_file(fp)
+function status = ClosePsrFile(fp)
    status = 0;
    try
        fclose(fp);

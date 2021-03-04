@@ -1,11 +1,12 @@
-function [d,t]=read_psr_data(fp)
+function [d,t]=ReadPsrData(fp)
 %read the data from psr file
 %   return ; d--the data
 PsrGlobals
 % check if memory buffer is empty
 if(PsfDataCnt == 0)
     PsfPointer = 1;
-    [PsfDataBuf,PsfDataCnt] = fread(fp,FrameNumOneTime*FrameLen,DataType);
+    [PsfDataBuf,PsfDataCnt] = fread(fp,[FrameLen,FrameNumOneTime],DataType);
+    PsfDataBuf = PsfDataBuf';
 end
 
 % check if we still have frame los
