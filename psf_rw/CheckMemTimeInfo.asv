@@ -42,11 +42,8 @@ else
                         framecomp(i,27) = bitand(bitshift(timeinfotmp,-16),255);
                         framecomp(i,28) = bitand(bitshift(timeinfotmp,-24),255);
                     elseif(DataType == 'uint16')
-                        framecomp(i,13) = bitand(timeinfotmp,65535);
-                        framecomp(i,14) = bitand(bitshift(timeinfotmp,-16),65535);
+                        frame
                     end
-                % put the data back to the frame.
-                
                 end
                 
         end

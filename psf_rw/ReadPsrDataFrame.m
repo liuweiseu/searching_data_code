@@ -1,12 +1,18 @@
-function [d,t]=ReadPsrData(fp)
-%read the data from psr file
-%   return ; d--the data
+function [d,t]=ReadPsrDataFrame(fp,len)
+
+%---------------------------------------
+% Description:
+% The function will return the len frames.
+%---------------------------------------
+
 PsrGlobals
 % check if memory buffer is empty
 if(PsfDataCnt == 0)
     PsfPointer = 1;
     [PsfDataBuf,PsfDataCnt] = fread(fp,[FrameLen,FrameNumOneTime],DataType);
+    % it will be faster to do data processing with matrix transpose
     PsfDataBuf = PsfDataBuf';
+    [PsfDatabBuf, PsfDataCnt] = CheckMemTimeInfo(PsfDataCnt);
 end
 
 % check if we still have frame los
