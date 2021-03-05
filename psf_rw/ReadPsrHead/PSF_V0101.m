@@ -1,6 +1,13 @@
 function PSF_V0101(fp)
 
-%PSF format v1.1
+%------------------------------
+% Description:
+% What we did in this function
+% 1. read some necessary parameters from the psf file;
+% 2. initialize the global parameters;
+%------------------------------
+
+%----PSF header format v1.1----
 %(pulsar_file_id)
 %(source_name)
 %(save_time)
@@ -33,7 +40,7 @@ function PSF_V0101(fp)
 %(center_freq)
 %(side_band)
 %(reserved)
-
+%------------------------------
 PsrGlobals;
     s=fread(fp,[16,32],'uchar');
     
@@ -68,7 +75,8 @@ PsrGlobals;
     StopCh = str2num(sprintf('%s',s(:,29)));
     CenterFreq = str2num(sprintf('%s',s(:,30)));
     SideBand = sprintf('%s',s(:,31));
-    
+ 
+    % initialize 
     % calculate DateType and FrameHeaderSize
     if(BitMode == 8)
         DataType = 'uchar';
@@ -92,10 +100,11 @@ PsrGlobals;
     
     % calculate FrameNumOneTime
     % read 1GB from data file one time
-    memorysize = 1;
+    memorysize = 0.1;
     FrameLen = ChannelNum * ObsMode + FrameHeaderSize;
     FrameNumOneTime = floor(memorysize * 1024 * 1024 * 1024 /(BitMode/8) /FrameLen);
-    PsfDataBuf = zeros(FrameNumOneTime,1);
+    PsfDataBuf = [];
+    PsfTimeInfoBuf = [];
     PsfDataCnt = 0;
     PsfPointer = 1;
 end

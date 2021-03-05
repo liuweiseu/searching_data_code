@@ -40,4 +40,4 @@ global TimeInfoPrevious TimeInfoNext
 global LostFrames TotalLost
 
 % read FrameNum frames from psf file one time for data processing
-global FrameNumOneTime MemEmpty PsfDataBuf PsfDataCnt PsfPointer
+global FrameNumOneTime PsfDataBuf PsfTimeInfoBuf PsfDataCnt PsfPointer
