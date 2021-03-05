@@ -88,7 +88,7 @@ PsrGlobals;
     FrameHeaderSize = 32 * 8 / BitMode;
     
     % skip the first data frame.
-    tmp = fread(fp,[ObsMode,ChannelNum],DataType);
+    %tmp = fread(fp,[ObsMode,ChannelNum],DataType);
     
     % init lost frame
     TotalLost = [];
