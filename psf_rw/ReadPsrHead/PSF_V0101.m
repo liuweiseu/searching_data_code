@@ -87,15 +87,10 @@ PsrGlobals;
     end
     FrameHeaderSize = 32 * 8 / BitMode;
     
-    % get TimeInfo from the first data frame.
-    tmp = fread(fp,8,'uint32');
-    TimeInfoPrevious = tmp(7);
-    TimeInfoNext = 0;
     % skip the first data frame.
     tmp = fread(fp,[ObsMode,ChannelNum],DataType);
     
     % init lost frame
-    LostFrames = 0;
     TotalLost = [];
     
     % calculate FrameNumOneTime
