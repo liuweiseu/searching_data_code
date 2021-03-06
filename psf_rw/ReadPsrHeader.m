@@ -8,7 +8,7 @@ function status=ReadPsrHeader(fp)
 % http://10.129.19.232/weiliu/searchingmode_fileformat.git
 %---------------------------------
 
-path(path,'psf_rw/ReadPsrHead');
+addpath('./ReadPsrHead');
 
 [file_head,n]=fread(fp,16,'*uint8');
 

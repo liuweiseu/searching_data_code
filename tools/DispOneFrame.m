@@ -1,7 +1,14 @@
 clear;
 clc;
 close all;
-PsrGlobals
+
+% add the path of psf_rw
+addpath(genpath('../psf_rw'));
+
+% include global parameters
+PsrGlobals;
+
+% get the path of the psr file
 [filename0, pathname] = uigetfile( ...
     {'*.dat','data Files';...
     '*.*','All Files' },...
@@ -22,12 +29,14 @@ if(status < 0)
     return;
 end
 
+% set some necessary parameters here
 fig_para = [[1,1];[1,2];[2,2]];
 fig_title = [[{'RR+LL'},{'Reserved'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Re'},{'Im'}]];
 fig_color = ['-r','-b','-g','-black'];
 
+% calculate freq resolution
 df = SamplingFreq/FFTNum;
 
 cho = 0;

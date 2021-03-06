@@ -8,7 +8,7 @@ PsrGlobals  %define the global variable for useful parameter to be used in other
     {'*.dat','data Files';...
     '*.*','All Files' },...
     '请选择要处理的脉冲星数据',...
-    'D:\data process\色散值较大的数据');
+    'J:\存数软件');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -16,25 +16,18 @@ else
    filename= fullfile(pathname, filename0);
 end
 
-N=input('N=');%输入要看的点数
-%N=30000;
+time=input('Pls type in the time(s):');
 
-fp_r=fopen(filename);
-length = read_psr_head(fp_r);%将512字节文件头读出来
+n = time/SamplingTime;
 
-i=1;
-
-
-while i<=N
-%   [d,n]=fread(fp_r,2080,'*uint8');
-   [d,t,p]=read_psr_data(fp_r,length);
-   pps(i)=p;
-   i=i+1
+if(n>FrameNumOneTime)
+    len = FrameNumOneTime;
+else
+    len = n;
 end
 
-dt=1/2400e6*4096*22;%time inteval
-t=(0:N-1)*dt;
+while n>0
 
-plot(t(1:N),pps);
+plot(t(1:N),data);
 xlabel('time(s)');title(['multichannel result of ',filename0]);
 fclose(fp_r);
