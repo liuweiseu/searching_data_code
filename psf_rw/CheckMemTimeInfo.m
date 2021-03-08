@@ -35,8 +35,8 @@ else
             timeinfo = t(index);
             [tmp_d,tmp_t] = CompensateLoss(timeinfo,frameloss(i));
             % put the data back to the frame.
-            d = [d(1:index,:);tmp_d;d(index:cnt,:)]; 
-            t = [t(1:index,1);tmp_t;t(index:cnt,:)];
+            d = [d(1:index,:);tmp_d;d(index+1:cnt,:)]; 
+            t = [t(1:index,1);tmp_t;t(index+1:cnt,:)];
             cnt = cnt + frameloss(i);
             % record the frame lost
             TotalLost(length(TotalLost)+1) = frameloss(i);
