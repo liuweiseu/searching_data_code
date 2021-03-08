@@ -38,7 +38,7 @@ else
             % put the data back to the frame.
             upframeno = i + sum(TotalLost);
             downframeno = cnt-upframeno;
-            d = [d(1:upfameno,:);tmp_d;d(downframeno:cnt,:)]; 
+            d = [d(1:upframeno,:);tmp_d;d(downframeno:cnt,:)]; 
             t = [t(1:upframeno,1);tmp_t;t(downframeno:cnt,:)];
             cnt = cnt + frameloss(i);
         end
