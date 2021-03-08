@@ -34,7 +34,7 @@ global SourceName...
 global DataType FrameHeaderSize FrameLen
 
 % lost frames
-global TotalLost
+global TotalLost TimeInfoPrevious TimeInfoNext
 
 % read FrameNum frames from psf file one time for data processing
 global FrameNumOneTime PsfDataBuf PsfTimeInfoBuf PsfDataCnt PsfPointer

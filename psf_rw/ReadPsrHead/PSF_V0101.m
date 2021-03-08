@@ -86,17 +86,19 @@ PsrGlobals;
         DataType = 'uchar';
     end
     FrameHeaderSize = 32 * 8 / BitMode;
-    
-    % skip the first data frame.
-    %tmp = fread(fp,[ObsMode,ChannelNum],DataType);
+    FrameLen = ChannelNum * ObsMode + FrameHeaderSize;
     
     % init lost frame
     TotalLost = [];
+    % read the timeinfo from the first data frame
+    [d] = fread(fp,8,'uint32');
+    TimeInfoPrevious = d(7) - AccNum;
+    TimeInfoNext = 0;
+    fseek(fp,-32,'cof');
     
     % calculate FrameNumOneTime
     % read 1GB from data file one time
     memorysize = 0.1;
-    FrameLen = ChannelNum * ObsMode + FrameHeaderSize;
     FrameNumOneTime = floor(memorysize * 1024 * 1024 * 1024 /(BitMode/8) /FrameLen);
     PsfDataBuf = [];
     PsfTimeInfoBuf = [];

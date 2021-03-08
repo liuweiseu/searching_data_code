@@ -18,10 +18,10 @@ elseif(DataType == 'uint16')
     d = buf(:,17:FrameLen);
     cnt = r;
 end
-   
-frameloss = diff(t)/AccNum-1;
 
-if(max(frameloss) == 1)
+% first, check the whole data
+frameloss = diff(t)/AccNum-1;
+if(max(frameloss) == 0)
     % no frame loss, that's great!
     d = d;
     t = t;
@@ -31,14 +31,10 @@ else
         if(frameloss(i) > 0)
             % record the frame lost first
             TotalLost(length(TotalLost)+1) = frameloss(i);
-            % then, create the lost frames 
-            tmp_d = zeros(frameloss(i),ChannelNum);
+            % then, create the lost frames
             index = i + sum(TotalLost);
             timeinfo = t(index);
-            tmp_t = zeros(frameloss(i),1);
-            for j = 1:length(frameloss(i))
-                tmp_t(j,1) = timeinfo + j * AccNum;
-            end
+            [tmp_d,tmp_t] = CompensateLoss(timeinfo,frameloss(i));
             % put the data back to the frame.
             upframeno = i + sum(TotalLost);
             downframeno = cnt-upframeno;
@@ -48,6 +44,19 @@ else
         end
     end
 end
+
+% then, check the timeinfo from the beginning of the file
+TimeInfoNext = t(1);
+lost = (TimeInfoNext - TimeInfoPrevious)/AccNum - 1;
+if(lost > 0)
+    % record the frame lost first
+    TotalLost(length(TotalLost)+1) = lost;
+    [loss_d, loss_t] = CompensateLoss(TimeInfoPrevious,lost);
+    d = [loss_d; d];
+    t = [loss_t, t];
+    cnt = cnt + lost;
+end
+TimeInfoPrevious = t(cnt);
 
 end
 

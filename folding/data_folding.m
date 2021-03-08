@@ -36,7 +36,8 @@ n = floor(baselinetime/dt);
 
 remaining = {[],[0]};
 
-period = 0.156384121559;
+%period = 0.156384121559;
+period = 0.005757451936712637;
 
 [d,t] = ReadPsrDataFrame(fp,n);
 len_d = 1;
