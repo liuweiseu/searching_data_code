@@ -100,7 +100,7 @@ PsrGlobals;
     FrameNumOneTime = floor(memorysize * 1024 * 1024 * 1024 /(BitMode/8) /FrameLen);
     PsfDataBuf = [];
     PsfTimeInfoBuf = [];
-    PsfDataCnt = 0;
-    PsfPointer = 1;
+    PsfDataCnt = uint64(0);
+    PsfPointer = uint64(1);
 end
 

@@ -43,13 +43,12 @@ cho = 0;
 frameno = 0;
 while cho~=1
     [d,t]=ReadPsrDataFrame(fp_r,1);
-    d = reshape(d,ObsMode,ChannelNum);
     index = nextpow2(ObsMode) + 1;
     x = (1:ChannelNum)*df/10^6;
     frameno = frameno + 1;
     for i =1:ObsMode
         subplot(fig_para(index,1),fig_para(index,2),i);
-        plot(x,d(i,:),fig_color(i));
+        plot(x,d{i},fig_color(i));
         xlabel('Freq/MHz')
         title([fig_title{index,i},'  FrameNo:',int2str(frameno)]);
     end

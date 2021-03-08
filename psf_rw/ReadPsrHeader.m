@@ -8,7 +8,7 @@ function status=ReadPsrHeader(fp)
 % http://10.129.19.232/weiliu/searchingmode_fileformat.git
 %---------------------------------
 
-addpath('./ReadPsrHead');
+%addpath('./ReadPsrHead');
 
 [file_head,n]=fread(fp,16,'*uint8');
 
@@ -27,7 +27,6 @@ elseif(strncmp(s,'PSF_V0101',9))
 elseif strncmp(s, 'SOURCE_NAME',11)
     PSF_V0001(fp);   
 else
-    fprintf("The file can't be recognized!");
     status = -1;
 end
 
