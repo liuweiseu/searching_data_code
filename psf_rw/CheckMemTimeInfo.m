@@ -21,6 +21,7 @@ end
 
 % first, check the whole data
 frameloss = diff(t)/AccNum-1;
+loss = 0;
 if(max(frameloss) == 0)
     % no frame loss, that's great!
     d = d;
@@ -29,18 +30,17 @@ if(max(frameloss) == 0)
 else
     for i = 1:length(frameloss)
         if(frameloss(i) > 0)
-            % record the frame lost first
-            TotalLost(length(TotalLost)+1) = frameloss(i);
-            % then, create the lost frames
-            index = i + sum(TotalLost);
+            % first, create the lost frames
+            index = i + loss;
             timeinfo = t(index);
             [tmp_d,tmp_t] = CompensateLoss(timeinfo,frameloss(i));
             % put the data back to the frame.
-            upframeno = i + sum(TotalLost);
-            downframeno = cnt-upframeno;
-            d = [d(1:upframeno,:);tmp_d;d(downframeno:cnt,:)]; 
-            t = [t(1:upframeno,1);tmp_t;t(downframeno:cnt,:)];
+            d = [d(1:index,:);tmp_d;d(index:cnt,:)]; 
+            t = [t(1:index,1);tmp_t;t(index:cnt,:)];
             cnt = cnt + frameloss(i);
+            % record the frame lost
+            TotalLost(length(TotalLost)+1) = frameloss(i);
+            loss = loss + frameloss(i);
         end
     end
 end
