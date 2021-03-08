@@ -30,7 +30,7 @@ end
 
 baselinetime = 3;
 
-n = baselinetime / SamplingTime * 1000;
+dt = AccNum * FFTNum / SamplingFreq;
 
 [d,t] = ReadPsrDataFrame(fp,n);
 len_d = size(d,2);
@@ -42,15 +42,17 @@ period = 0.156384121559;
 [d,t] = ReadPsrDataFrame(fp,n);
 len_d = 1;
 
+i = 0;
 n = floor(period/SamplingTime);
 pf_data = zeros(ChannelNum,n);
 while(len_d > 0)
     baseline = mean(d{1},1);
     d{1} = d{1} - baseline;
-    [tmp,remaining] = PsrFolding([remaining{1};d{1}],remaining{2},period,SamplingTime);
+    [tmp,remaining] = PsrFolding([remaining{1};d{1}],remaining{2},period,dt);
     pf_data = pf_data + tmp;
     [d,t] = ReadPsrDataFrame(fp,n);
     len_d = size(d,2);
+    i = i + 1
 end
 
 ClosePsrFile(fp);
