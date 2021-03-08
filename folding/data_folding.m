@@ -20,6 +20,8 @@ else
    filename= fullfile(pathname, filename0);
 end
 
+starttime = clock;
+
 fp = OpenPsrFile(filename);
 
 status = ReadPsrHeader(fp);
@@ -58,4 +60,4 @@ end
 
 ClosePsrFile(fp);
 
-
+endtime = clock;

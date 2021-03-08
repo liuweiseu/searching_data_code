@@ -6,11 +6,7 @@ function [d,t]=ReadPsrDataFrame(fp,len)
 %---------------------------------------
 len = uint64(len);
 PsrGlobals
-% check if the size of the buffer is large enough
-% if not, let's enlarge the buffer size
-if(len>FrameNumOneTime)
-    FrameNumOneTime = len;
-end
+% check if the si
 % check if there is enough data in the buffer
 remaining = 1 + PsfDataCnt - PsfPointer;
 if(remaining < len)
