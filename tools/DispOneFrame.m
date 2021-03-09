@@ -30,7 +30,7 @@ if(status < 0)
 end
 
 % set some necessary parameters here
-fig_para = [[1,1];[1,2];[2,2]];
+fig_para = [[1,1];[2,1];[2,2]];
 fig_title = [[{'RR+LL'},{'Reserved'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Re'},{'Im'}]];

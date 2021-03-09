@@ -49,7 +49,7 @@ n = requirednum;
 while(n>0)
    [d,t] = ReadPsrDataFrame(fp,len);
    for i = 1:ObsMode
-        data{i} = [data{i}; sum(d(:,(ChannelNum*(i-1)+1):(ChannelNum*i)),2)];
+        data{i} = [data{i}; sum(d{i},2)];
    end
    n = n - len;
    if(n<len)
@@ -59,7 +59,7 @@ end
 ClosePsrFile(fp);
 
 % set some necessary parameters here
-fig_para = [[1,1];[1,2];[2,2]];
+fig_para = [[1,1];[2,1];[2,2]];
 fig_title = [[{'RR+LL'},{'Reserved'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Reserved'},{'Reserved'}];...
              [{'RR'},{'LL'},{'Re'},{'Im'}]];
