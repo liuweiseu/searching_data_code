@@ -75,7 +75,15 @@ PsrGlobals;
     StopCh = str2num(sprintf('%s',s(:,29)));
     CenterFreq = str2num(sprintf('%s',s(:,30)));
     SideBand = sprintf('%s',s(:,31));
- 
+    
+    % sometimes,we only record some valid channel data, not all the data
+    % so we need to re-calculate the ChannelNum, ObsStartFreq, ObsCenterFreq and ObsBandwidth here.
+    df = ObsBandwidth/ChannelNum;
+    ChannelNum = StopCh - StartCh + 1;
+    ObsCenterFreq = ObsStartFreq + (StartCh + StopCh + 1)/2 * df;
+    ObsStartFreq = ObsStartFreq + StartCh * df;
+    ObsBandwidth = ChannelNum * df;
+    
     % initialize 
     % calculate DateType and FrameHeaderSize
     if(BitMode == 8)
