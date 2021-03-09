@@ -30,12 +30,17 @@ i = 1;
 data = [];
 timeinfo = [];
 len_d = 1;
-while(led_d > 0)
-    [d,t] = ReadPsrDataFrame(fp,1);
+while(len_d > 0)
+    [d,t] = ReadPsrDataFrame(fp,10000);
     len_d = size(d,2);
-    data(i,:) = d;
-    timeinfo(i) = t;
-    i = i + 1;
+    %[d,t] = ReadPsrDataFrame(fp,1);data(i,:) = d;
+    timeinfo = [timeinfo; t];
+    i = i + 1
 end
+
+figure;
 plot(timeinfo);
+figure;
+plot(diff(timeinfo));
+
 ClosePsrFile(fp);
