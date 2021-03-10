@@ -76,41 +76,5 @@ PsrGlobals;
     CenterFreq = str2num(sprintf('%s',s(:,30)));
     SideBand = sprintf('%s',s(:,31));
     
-    % sometimes,we only record some valid channel data, not all the data
-    % so we need to re-calculate the ChannelNum, ObsStartFreq, ObsCenterFreq and ObsBandwidth here.
-    df = ObsBandwidth/ChannelNum;
-    ChannelNum = StopCh - StartCh + 1;
-    ObsCenterFreq = ObsStartFreq + (StartCh + StopCh + 1)/2 * df;
-    ObsStartFreq = ObsStartFreq + StartCh * df;
-    ObsBandwidth = ChannelNum * df;
-    
-    % initialize 
-    % calculate DateType and FrameHeaderSize
-    if(BitMode == 8)
-        DataType = 'uchar';
-    elseif(BitMode == 16)
-        DataType = 'uint16';
-    else
-        DataType = 'uchar';
-    end
-    FrameHeaderSize = 32 * 8 / BitMode;
-    FrameLen = ChannelNum * ObsMode + FrameHeaderSize;
-    
-    % init lost frame
-    TotalLost = [];
-    % read the timeinfo from the first data frame
-    [d] = fread(fp,8,'uint32');
-    TimeInfoPrevious = d(7) - AccNum;
-    TimeInfoNext = 0;
-    fseek(fp,-32,'cof');
-    
-    % calculate FrameNumOneTime
-    % read 1GB from data file one time
-    memorysize = 0.1;
-    FrameNumOneTime = floor(memorysize * 1024 * 1024 * 1024 /(BitMode/8) /FrameLen);
-    PsfDataBuf = [];
-    PsfTimeInfoBuf = [];
-    PsfDataCnt = uint64(0);
-    PsfPointer = uint64(1);
 end
 
