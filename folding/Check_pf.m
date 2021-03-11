@@ -62,7 +62,7 @@ x = (1:bin)*dt;
 df = ObsBandwidth/row;
 y = ObsStartFreq + (1:row)*df;
 figure;
-h = pcolor(x,y,data');
+h = pcolor(x,y,data);
 set(h,'edgecolor','none','facecolor','interp');
 colorbar;
 xlabel('Time/ms');
