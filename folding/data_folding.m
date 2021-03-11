@@ -72,6 +72,26 @@ end
 
 ClosePsrFile(fp);
 
+% save data to *.pf
+[path,filename,ext] = fileparts(filename);
+filename = [path,'/',filename,'.pf'];
+fp = fopen(filename,'wb');
+% write period to pf file
+fwrite(fp,period,'double');
+% write dt to pf file
+fwrite(fp,dt,'double');
+% write startfreq to pf file
+fwrite(fp,ObsStartFreq,'double');
+% write bandwidth to pf file
+fwrite(fp,ObsBandwidth,'double');
+% write Channelnum/row num to pf file;
+fwrite(fp,ChannelNum,'double');
+% write cloumn to pf file
+fwrite(fp,size(pf_data,2),'double');
+% write pf_data to pf file
+fwrite(fp,pf_data,'double');
+fclose(fp);
+
 % record the end time, so we can know how long it takes to finish the data
 % processing
 endtime = clock;
