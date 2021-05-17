@@ -43,6 +43,7 @@ end
 filename_o = [filepath,'/',name, '_m',ext];
 
 fp_r = fopen(filename);
+fseek(fp_r,512,-1);
 fp_w = fopen(filename_o,'wb');
 fprintf(fp_w,'%s',fileheader');
 
