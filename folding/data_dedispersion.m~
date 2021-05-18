@@ -10,9 +10,9 @@ PsrGlobals;
 
 % get the full path of the psr file
 [filename0, pathname] = uigetfile( ...
-    {'*.pf;*.pfd','data Files';...
+    {'*.pf','data Files';...
     '*.*','All Files' },...
-    'Please select the PSR Folded data file',...
+    'Please select the PSR data file',...
     '/Users/wei/Project/PSR/data');
 if isequal(filename0,0)
    disp('User selected Cancel')
@@ -45,33 +45,21 @@ pf_data = fread(fp,[row, col],'double');
 
 fclose(fp);
 
-bin = input('Pls type in the bin number(default-512; -1-Original number):');
-if(length(bin) == 0)
-   bin = 512;
-elseif(bin == -1)
-    bin = col;
+if(dm >= 0)
+    offset_array = [];
+else
+    [filename0, pathname] = uigetfile( ...
+    {'*.oa','data Files';...
+    '*.*','All Files' },...
+    'Please select the PSR data file',...
+    '/Users/wei/Project/PSR/data');
+if isequal(filename0,0)
+   disp('User selected Cancel')
+   return;
+else
+   oa_filename= fullfile(pathname, filename0);
 end
-
-delta_bin = floor(col/bin);
-for i = 1:bin
-    if(i ~= bin)
-        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(i*delta_bin)),2)/delta_bin;
-    else
-        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(size(pf_data,2))),2)/(col-delta_bin*bin);
-    end
+   offset_array = load(oa_filename) 
 end
-
-dt = Period / bin * 1000;
-x = (1:bin)*dt;
-df = ObsBandwidth/row;
-y = ObsStartFreq + (1:row)*df;
-figure;
-h = pcolor(x,y,data);
-set(h,'edgecolor','none','facecolor','interp');
-colorbar;
-xlabel('Time/ms');
-ylabel('Freq/MHz');
-figure;
-plot(x,sum(data));
-xlabel('Time/ms');
-title(name);
+pf_data_out = DeDispersion(pf_data,ObsStartFreq,ObsBandwidth,dm,period,offset_array);
+    

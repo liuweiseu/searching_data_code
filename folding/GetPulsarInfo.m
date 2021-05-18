@@ -1,4 +1,4 @@
-function [period] = GetPeriod(pulsar_info_file,pulsar_name)
+function [period,dm] = GetPulsarInfo(pulsar_info_file,pulsar_name)
 period = 0;
 try
     d = importdata(pulsar_info_file);
@@ -19,7 +19,8 @@ len = length(name);
 for i = 1:len
     s = strcmp(name{i},pulsar_name);
     if(s == 1)
-        period = d.data(i);
+        period = d.data(i,1);
+        dm = d.data(i,2);
     end
 end
 

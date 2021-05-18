@@ -39,7 +39,7 @@ if(period == 0)
     fprintf('Pls type in in the period of the pulsar--%s(s):',deblank(SourceName));
     period = input('');
     fprintf('Pls type in in the DM of the pulsar--%s(s):',deblank(SourceName));
-    dm = input('');
+    period = input('');
 end
 
 % calculate the time resolution 
@@ -78,10 +78,6 @@ ClosePsrFile(fp);
 [path,filename,ext] = fileparts(filename);
 filename = [path,'/',filename,'.pf'];
 fp = fopen(filename,'wb');
-% let's write 512 zeros to the file, which the original file header
-tmp = zeros(1,512);
-fwrite(fp,tmp,'uint8');
-fseek(fp,0,'bof');
 % write period to pf file
 fwrite(fp,period,'double');
 % write dt to pf file

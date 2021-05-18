@@ -10,9 +10,9 @@ PsrGlobals;
 
 % get the full path of the psr file
 [filename0, pathname] = uigetfile( ...
-    {'*.pf;*.pfd','data Files';...
+    {'*.pf','data Files';...
     '*.*','All Files' },...
-    'Please select the PSR Folded data file',...
+    'Please select the PSR data file',...
     '/Users/wei/Project/PSR/data');
 if isequal(filename0,0)
    disp('User selected Cancel')
@@ -37,9 +37,7 @@ row = fread(fp,1,'double');
 % get column num
 col = fread(fp,1,'double');
 % get dm
-dm = fread(fp,1,'double');
-% skip the pf file header
-fseek(fp,512,'bof');
+dm = fread(fp,1,'do')
 % get pf_data
 pf_data = fread(fp,[row, col],'double');
 
