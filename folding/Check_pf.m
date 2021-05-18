@@ -51,9 +51,9 @@ end
 delta_bin = floor(col/bin);
 for i = 1:bin
     if(i ~= bin)
-        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(i*delta_bin)),2);
+        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(i*delta_bin)),2)/delta_bin;
     else
-        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(size(pf_data,2))),2);
+        data(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(size(pf_data,2))),2)/(col-delta_bin*bin);
     end
 end
 

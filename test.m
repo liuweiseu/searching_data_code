@@ -2,8 +2,9 @@ clear;
 clc;
 close all;
 
-% all the psf_rw functions are in psf_rw.
-path(path,'psf_rw');
+% add the path of psf_rw
+addpath(genpath('./psf_rw'));
+
 PsrGlobals  
 
 [filename0, pathname] = uigetfile( ...
@@ -39,7 +40,7 @@ while(len_d > 0)
 end
 
 figure;
-plot(timeinfo);
+plot(timeinfo*FFTNum/SamplingFreq);
 figure;
 plot(diff(timeinfo));
 

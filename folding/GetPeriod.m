@@ -7,13 +7,21 @@ catch
     return;
 end
 
-len = length(d.rowheaders);
+try
+    % this is for matlab2020a
+    name = d.rowheaders;
+catch
+    % this is for matlab2021a
+    name = d.textdata;
+end
+len = length(name);
 
 for i = 1:len
-    s = strcmp(d.rowheaders{i},pulsar_name);
+    s = strcmp(name{i},pulsar_name);
     if(s == 1)
         period = d.data(i);
     end
 end
+
 end
 
