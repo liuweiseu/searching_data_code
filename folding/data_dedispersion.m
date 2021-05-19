@@ -13,7 +13,7 @@ PsrGlobals;
     {'*.pf','data Files';...
     '*.*','All Files' },...
     'Please select the PSR Folded data file',...
-    '/Users/wei/Project/PSR/data');
+    '../../SearchingMode');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -52,7 +52,7 @@ else
     {'*.oa','data Files';...
     '*.*','All Files' },...
     'Please select the Offset Array file',...
-    '/Users/wei/Project/PSR/data');
+    '../../SearchingMode');
     if isequal(filename0,0)
         disp('User selected Cancel')
         return;
@@ -91,3 +91,4 @@ fseek(fp,512,'bof');
 % write pf_data to pf file
 fwrite(fp,pf_data_out,'double');
 fclose(fp);
+disp('Dedispersion Finished!');

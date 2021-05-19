@@ -34,13 +34,18 @@ len_d = 1;
 while(len_d > 0)
     [d,t] = ReadPsrDataFrame(fp,10000);
     len_d = size(d,2);
+    if(len_d == 0)
+        break;
+    end
     %[d,t] = ReadPsrDataFrame(fp,1);data(i,:) = d;
     timeinfo = [timeinfo; t];
+    tmp = sum(d{1},2);
+    data = [data, tmp'];
     i = i + 1
 end
 
 figure;
-plot(timeinfo*FFTNum/SamplingFreq);
+plot(timeinfo*FFTNum/SamplingFreq,data);
 figure;
 plot(diff(timeinfo));
 
