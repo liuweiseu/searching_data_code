@@ -18,11 +18,12 @@ n_double = period/dt;
 n = r;
 
 pf_data = zeros(c, n_int);
-
+sum_cnt = 0;
 start_index = 1;
 end_index = start_index + n_int - 1;
 while(n > n_int)
     pf_data = pf_data + data(start_index:end_index,:)';
+    sum_cnt = sum_cnt + 1;
     acc_int = acc_int + double(n_int);
     acc_double = acc_double + n_double;
     acc_err = acc_double - acc_int;
@@ -35,7 +36,7 @@ while(n > n_int)
     end_index = start_index + n_int - 1;
     n = n - n_int;
 end
-
+pf_data = pf_data/sum_cnt;
 % we have some remaining data, so we need to return them back
 % we also return the acc err back
 % both of them will be useful, if we keeping doing folding

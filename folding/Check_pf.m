@@ -74,4 +74,5 @@ ylabel('Freq/MHz');
 figure;
 plot(x,sum(data));
 xlabel('Time/ms');
+name=replace(name,'_','\_');
 title(name);

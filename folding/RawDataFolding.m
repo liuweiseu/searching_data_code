@@ -60,18 +60,19 @@ pf_data = zeros(ChannelNum,x);
 % read data frame first, and check the len of data
 [d,t] = ReadPsrDataFrame(fp,n);
 len_d = size(d,2);
-
+sum_cnt = 0;
 while(len_d > 0)
     % remove base line first
     baseline = mean(d{1},1);
     d{1} = d{1} - baseline;
     [tmp,remaining] = PsrFolding([remaining{1};d{1}],remaining{2},period,dt);
     pf_data = pf_data + tmp;
+    sum_cnt = sum_cnt +1;
     [d,t] = ReadPsrDataFrame(fp,n);
     len_d = size(d,2);
     i = i + 1
 end
-
+pf_data = pf_data/sum_cnt;
 ClosePsrFile(fp);
 
 % save data to *.pf

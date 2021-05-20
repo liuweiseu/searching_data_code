@@ -40,9 +40,8 @@ raw {32,1} = 'reserved';
     {'*.dat','data Files';...
     '*.*','All Files' },...
     'Please select the PSR data file',...
-    '/Users/wei/Project/PSR/data');
+    '../../SearchingMode');
 if isequal(filename0,0)% create the name of output file
-fp_w = filename
    disp('User selected Cancel')
    return;
 else
