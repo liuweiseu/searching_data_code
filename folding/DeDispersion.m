@@ -15,6 +15,7 @@ function [data_out]=DeDispersion(data_in,Start_Freq,Bandwidth,DM,dt,offset_array
         else
             dtn = offset_array(i); 
             dtn = rem(dtn,colum);
+        end
         if(dtn~=0)
             data_in_temp=data_in(i,:);
             data_out(i,(dtn+1):(colum))=data_in_temp(1:(colum-dtn));

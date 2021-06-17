@@ -66,6 +66,7 @@ x = (1:bin)*dt;
 df = ObsBandwidth/row;
 y = ObsStartFreq + (1:row)*df;
 figure;
+colormap(jet(128));
 h = pcolor(x,y,data);
 set(h,'edgecolor','none','facecolor','interp');
 colorbar;

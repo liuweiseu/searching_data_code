@@ -62,7 +62,7 @@ else
     offset_array = load(oa_filename); 
 end
 
-pf_data_out = DeDispersion(pf_data,ObsStartFreq,ObsBandwidth,dm,Period,offset_array);
+pf_data_out = DeDispersion(pf_data,ObsStartFreq,ObsBandwidth,dm,dt,offset_array);
     
 % save data to *.pf
 [path,filename,ext] = fileparts(filename);
