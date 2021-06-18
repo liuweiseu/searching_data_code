@@ -1,6 +1,5 @@
 clear;
 clc;
-close all;
 
 % add the path of psf_rw
 addpath(genpath('../psf_rw'));
@@ -23,7 +22,12 @@ end
 
 % record the start time of the this program
 starttime = clock;
-
+dp = 0.0013/252;
+p0=1.187913065936;
+p1=1.18803779015977;
+j=0;
+fprintf('cyc=%d\n',floor((p1-p0)/dp));
+for period=p0:dp:p1
 % open and read file header
 fp = OpenPsrFile(filename);
 fileinfo = dir(filename);
@@ -32,15 +36,6 @@ status = ReadPsrHeader(fp);
 if(status < 0)
     fprintf("The file header can't be recognized");
     return;
-end
-
-% get the period of the pulsar
-[period,dm] = GetPulsarInfo('Pulsar_info.txt',deblank(SourceName));
-if(period == 0)
-    fprintf('Pls type in in the period of the pulsar--%s(s):',deblank(SourceName));
-    period = input('');
-    fprintf('Pls type in in the DM of the pulsar--%s(s):',deblank(SourceName));
-    dm = input('');
 end
 
 % calculate the time resolution 
@@ -73,40 +68,11 @@ while(len_d > 0)
     [d,t] = ReadPsrDataFrame(fp,n);
     len_d = size(d,2);
     i = i + 1;
-    clc;
-    fprintf('%.2f%% of raw data has already been processed...\n',i/total_cyc*100);
+    %clc;
+    %fprintf('%.2f%% of raw data has already been processed...\n',i/total_cyc*100);
 end
+j=j+1;
 pf_data = pf_data/sum_cnt;
+fprintf('i: %d Period: %.14f  Peak: %.2f\n',j,period,max(sum(pf_data)))
 ClosePsrFile(fp);
-
-% save data to *.pf
-[path,filename,ext] = fileparts(filename);
-filename = [path,'/',filename,'.pf'];
-fp = fopen(filename,'wb');
-% let's write 512 zeros to the file, which the original file header
-tmp = zeros(1,512);
-fwrite(fp,tmp,'uint8');
-fseek(fp,0,'bof');
-% write period to pf file
-fwrite(fp,period,'double');
-% write dt to pf file
-fwrite(fp,dt,'double');
-% write startfreq to pf file
-fwrite(fp,ObsStartFreq,'double');
-% write bandwidth to pf file
-fwrite(fp,ObsBandwidth,'double');
-% write Channelnum/row num to pf file;
-fwrite(fp,ChannelNum,'double');
-% write cloumn to pf file
-fwrite(fp,size(pf_data,2),'double');
-% write dm to pf file
-fwrite(fp,dm,'double');
-% skip the first 512 Bytes, which is the pf file header
-fseek(fp,512,'bof');
-% write pf_data to pf file
-fwrite(fp,pf_data,'double');
-fclose(fp);
-
-% record the end time, so we can know how long it takes to finish the data
-% processing
-endtime = clock;
+end

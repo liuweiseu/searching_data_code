@@ -81,7 +81,7 @@ fwrite(fp,ObsStartFreq,'double');
 % write bandwidth to pf file
 fwrite(fp,ObsBandwidth,'double');
 % write Channelnum/row num to pf file;
-fwrite(fp,ChannelNum,'double');
+fwrite(fp,size(pf_data,1),'double');
 % write cloumn to pf file
 fwrite(fp,size(pf_data,2),'double');
 % write dm to pf file
