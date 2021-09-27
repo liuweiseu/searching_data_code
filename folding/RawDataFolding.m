@@ -13,7 +13,7 @@ PsrGlobals;
     {'*.dat','data Files';...
     '*.*','All Files' },...
     'Please select the PSR data file',...
-    '../../Yunnan_Data/J0835-4510_0');
+    '../searching_data');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -80,8 +80,8 @@ end
 pf_data = pf_data/sum_cnt;
 ClosePsrFile(fp);
 t_stop=datetime;
-fprintf('Processing time:\r\n');
-between(t_start,t_stop)
+t_processing = datevec(between(t_start,t_stop));
+fprintf('Processing time:%.4fs\r\n',t_processing(6));
 
 % save data to *.pf
 [path,filename,ext] = fileparts(filename);
