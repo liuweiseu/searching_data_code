@@ -13,7 +13,7 @@ PsrGlobals;
     {'*.dat','data Files';...
     '*.*','All Files' },...
     'Please select the PSR data file',...
-    '../../SearchingMode');
+    '../../Yunnan_Data/J0835-4510_0');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -58,6 +58,7 @@ x = floor(period/dt);
 remaining = {[],[0]};
 pf_data = zeros(ChannelNum,x);
 
+t_start=datetime;
 % read data frame first, and check the len of data
 [d,t] = ReadPsrDataFrame(fp,n);
 len_d = size(d,2);
@@ -78,6 +79,9 @@ while(len_d > 0)
 end
 pf_data = pf_data/sum_cnt;
 ClosePsrFile(fp);
+t_stop=datetime;
+fprintf('Processing time:\r\n');
+between(t_start,t_stop)
 
 % save data to *.pf
 [path,filename,ext] = fileparts(filename);

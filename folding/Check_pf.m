@@ -13,7 +13,7 @@ PsrGlobals;
     {'*.pf;*.pfd','data Files';...
     '*.*','All Files' },...
     'Please select the PSR Folded data file',...
-    '../../SearchingMode');
+    '../../Yunnan_Data/J0835-4510_0');
 if isequal(filename0,0)
    disp('User selected Cancel')
    return;
@@ -44,7 +44,7 @@ fseek(fp,512,'bof');
 pf_data = fread(fp,[row, col],'double');
 
 fclose(fp);
-
+fprintf('Channel Number: %d\n',row);
 bin = input('Pls type in the bin number(default-512; -1-Original number):');
 
 if(length(bin) == 0)
@@ -59,13 +59,18 @@ if(length(sub_band) == 0)
 end
 
 delta_bin = floor(col/bin);
-for i = 1:bin
-    if(i ~= bin)
-        tmp(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(i*delta_bin)),2)/delta_bin;
-    else
-        tmp(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(size(pf_data,2))),2)/(col-delta_bin*bin);
+if(delta_bin == 1)
+    tmp = pf_data;
+else
+    for i = 1:bin
+        if(i ~= bin)
+            tmp(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(i*delta_bin)),2)/delta_bin;
+        else
+            tmp(:,i) = sum(pf_data(:,((i-1)*delta_bin+1):(size(pf_data,2))),2)/(col-delta_bin*bin);
+        end
     end
 end
+snr = Cal_SNR(sum(tmp));
 
 if(sub_band ~= -1)
     n_band = floor(ObsBandwidth/sub_band);
@@ -78,21 +83,28 @@ else
 end
 dt_bin = Period / bin * 1000;
 x = (1:bin)*dt_bin;
+p = (1:bin)/bin;
 df = ObsBandwidth/row;
 if(sub_band == -1)
     y = ObsStartFreq + (1:row)*df;
 else
     y = ObsStartFreq + (1:n_band)*sub_band;
 end
+name=replace(name,'_','\_');
 figure;
 colormap(jet(128));
-h = pcolor(x,y,data);
+h = pcolor(p,y,data);
 set(h,'edgecolor','none','facecolor','interp');
 colorbar;
-xlabel('Time/ms');
-ylabel('Freq/MHz');
+set(gca,'FontSize',14);
+xlabel('Phase','FontSize',16);
+ylabel('Freq/MHz','FontSize',16);
+title(name,'FontSize',16);
 figure;
-plot(x,sum(data));
-xlabel('Time/ms');
-name=replace(name,'_','\_');
-title(name);
+plot(p,sum(data));grid;
+set(gca,'FontSize',14);
+xlabel('Phase','FontSize',16);
+ylabel('Power','FontSize',16);
+name = [name,'  ','SNR: ',num2str(snr)]
+title(name,'FontSize',16);
+
