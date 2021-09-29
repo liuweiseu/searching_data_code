@@ -25,7 +25,7 @@ Four files are important for searching data processing:
   The periods and DMs of pulsars are recorded in this file.
 
 To process the searching data, you need to:<br>
-(1) add the period and DM info to Pulsar_info.txt.
+(1) add the period and DM info to Pulsar_info.txt.<br>
 (2) run RawDataFolding.m, and it will generate a .pf file, which contains the folded result without dedispersion.<br>
 (3) run RawDataDedispersion.m, and a .pfd file will be generated, which contains the dedispered result.<br>
 (4) run Check_pf.m, and select the .pf or .pfd file, to check the folded result without/with dedispersion.<br>
